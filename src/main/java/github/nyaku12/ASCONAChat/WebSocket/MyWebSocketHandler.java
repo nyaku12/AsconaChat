@@ -36,6 +36,12 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             case ("createUser"):
                 controller.createUser(jsonMap);
                 break;
+            case ("createChat"):
+                controller.createChat(jsonMap);
+                break;
+            case ("sentMessage"):
+                controller.createMessage(jsonMap);
+                break;
         }
     }
 

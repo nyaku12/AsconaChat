@@ -1,0 +1,17 @@
+{
+    "type": "createUser",
+    "login": "123",
+    "password": "123",
+    "name": "sas",
+    "enscryptionKey": "sas"
+}
+
+
+{
+    "type": "createChat",
+    "name": "123",
+    "open": true,
+    "passhash": 123
+}
+
+
