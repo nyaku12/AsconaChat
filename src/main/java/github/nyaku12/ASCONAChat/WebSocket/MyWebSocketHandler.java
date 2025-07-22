@@ -2,6 +2,7 @@ package github.nyaku12.ASCONAChat.WebSocket;
 
 import com.google.gson.Gson;
 import github.nyaku12.ASCONAChat.GeneralController;
+import github.nyaku12.ASCONAChat.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -9,18 +10,35 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class MyWebSocketHandler extends TextWebSocketHandler {
+    ConcurrentHashMap<String, Integer> connections = new ConcurrentHashMap<>();
     @Autowired
     GeneralController controller;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("connection succes: " + session.getId());
-        // Можно отправить приветственное сообщение
-        session.sendMessage(new TextMessage("hello"));
+        Integer code = controller.checkUser(session.getHandshakeHeaders());
+        switch (code){
+            case 1:
+                session.sendMessage(new TextMessage("Wrong Login"));
+                session.close();
+                break;
+            case 2:
+                session.sendMessage(new TextMessage("Wrong Login or Password"));
+                session.close();
+                break;
+            default:
+                session.sendMessage(new TextMessage("succes"));
+                connections.put(session.getId(), code);
+                break;
+        }
+
     }
 
     @Override

@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
     private String login;
     @Column(name = "password")
     private Long passHash;
@@ -16,6 +16,9 @@ public class User {
     private Boolean status; //true - online, false - offline
     @Column(name = "enskey")
     private String enscryptionKey;
+
+    public User() {
+    }
 
     public User(String login, Long passHash, String name, String enscryptionKey) {
         this.login = login;
@@ -25,7 +28,7 @@ public class User {
         this.status = true;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -49,7 +52,7 @@ public class User {
         this.enscryptionKey = enscryptionKey;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 

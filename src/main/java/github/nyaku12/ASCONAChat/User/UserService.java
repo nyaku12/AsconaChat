@@ -1,5 +1,6 @@
 package github.nyaku12.ASCONAChat.User;
 
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,5 +12,9 @@ public class UserService {
         User user = new User(login, passHash, name, enscryptionKey);
         userRepository.save(user);
         return (user);
+    }
+    @Nullable
+    public User getByLogin(String login){
+        return userRepository.getByLogin(login);
     }
 }

@@ -7,6 +7,7 @@ import github.nyaku12.ASCONAChat.Message.MessageService;
 import github.nyaku12.ASCONAChat.User.User;
 import github.nyaku12.ASCONAChat.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -19,9 +20,6 @@ public class GeneralController {
     ChatService chatService;
     @Autowired
     MessageService messageService;
-    public User createUser(String login, Long passHash, String name, String enscryptionKey){
-        return (userService.createUser(login, passHash, name, enscryptionKey));
-    }
     public User createUser(Map<String, Object> jmap){
         return (userService.createUser(
                 jmap.get("login").toString(),
@@ -42,5 +40,14 @@ public class GeneralController {
                 ((Number) jmap.get("receiver")).longValue(),
                 ((Number) jmap.get("sender")).longValue()
         ));
+    }
+    public int checkUser(HttpHeaders headers){
+        User user = userService.getByLogin(headers.getFirst("login"));
+        if(user == null) return (1);//неверный логин
+        if(user.getPassHash().equals(
+                ((Number)(headers.getFirst("password").hashCode())).longValue())){
+            return (2);//неверный пароль
+        }
+        else return (200);
     }
 }
