@@ -25,16 +25,21 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         System.out.println("connection succes: " + session.getId());
         Integer code = controller.checkUser(session.getHandshakeHeaders());
         switch (code){
-            case 1:
+            case -1:
                 session.sendMessage(new TextMessage("Wrong Login"));
                 session.close();
                 break;
-            case 2:
+            case -2:
                 session.sendMessage(new TextMessage("Wrong Login or Password"));
+                session.close();
+                break;
+            case -3:
+                session.sendMessage(new TextMessage("You already Logged in"));
                 session.close();
                 break;
             default:
                 session.sendMessage(new TextMessage("succes"));
+                controller.updateOnlineById(code, true);
                 connections.put(session.getId(), code);
                 break;
         }
@@ -66,6 +71,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
         System.out.println("connection closed: " + session.getId());
+        controller.updateOnlineById(connections.get(session.getId()), false);
     }
 
     @Override

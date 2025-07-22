@@ -17,4 +17,10 @@ public class UserService {
     public User getByLogin(String login){
         return userRepository.getByLogin(login);
     }
+    public void updateOnline(int id, Boolean online){
+        userRepository.updateStatusById(id, online);
+    }
+    public Boolean findStatusById(int id){
+        return (userRepository.findStatusById(id));
+    }
 }
