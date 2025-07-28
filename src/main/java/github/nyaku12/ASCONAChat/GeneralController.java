@@ -43,7 +43,6 @@ public class GeneralController {
     }
     public int checkUser(HttpHeaders headers){
         User user = userService.getByLogin(headers.getFirst("login"));
-        System.out.println(user);
         if(user == null) return (-1);//неверный логин
         if(!user.getPassHash().equals(
                 ((Number)(headers.getFirst("password").hashCode())).longValue())){

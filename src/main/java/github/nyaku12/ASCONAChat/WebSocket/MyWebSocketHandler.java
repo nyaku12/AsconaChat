@@ -42,7 +42,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 controller.updateOnlineById(code, true);
                 connections.put(session.getId(), code);
                 break;
-        }
+        }//проверка логина и пароля
 
     }
 
