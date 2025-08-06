@@ -2,6 +2,7 @@ package github.nyaku12.ASCONAChat.WebSocket;
 
 import com.google.gson.Gson;
 import github.nyaku12.ASCONAChat.GeneralController;
+import github.nyaku12.ASCONAChat.Message.Message;
 import github.nyaku12.ASCONAChat.User.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,6 +24,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+        Gson gson = new Gson();
         System.out.println("connection succes: " + session.getId());
         Integer code = controller.checkUser(session.getHandshakeHeaders());
         switch (code){
@@ -43,7 +46,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 connections.put(session.getId(), code);
                 break;
         }//проверка логина и пароля
-
+        List<Message> messages = controller.getMessages(connections.get(session.getId()));
+        for (int i = 0; i < messages.size(); i++){
+            session.sendMessage(new TextMessage(gson.toJson(messages.get(i))));
+        }
     }
 
     @Override

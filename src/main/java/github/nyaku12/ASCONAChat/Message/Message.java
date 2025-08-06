@@ -2,6 +2,8 @@ package github.nyaku12.ASCONAChat.Message;
 
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "messages")
 public class Message {
@@ -14,13 +16,16 @@ public class Message {
     @Column(name = "sender")
     private Long sender_id;
     private Boolean status;
+    private Timestamp senttime;
 
-    public Message(String contain, Long receiverId, Long sender_id) {
+    public Message(String contain, Long receiverId, Long sender_id, Timestamp senttime) {
         this.contain = contain;
         this.receiverId = receiverId;
         this.sender_id = sender_id;
         this.status = false;
+        this.senttime = senttime;
     }
+    public Message() {}
 
     public void setId(Long id) {
         this.id = id;
@@ -40,6 +45,14 @@ public class Message {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public void setSenttime(Timestamp senttime) {
+        this.senttime = senttime;
+    }
+
+    public Timestamp getSenttime() {
+        return senttime;
     }
 
     public Long getId() {

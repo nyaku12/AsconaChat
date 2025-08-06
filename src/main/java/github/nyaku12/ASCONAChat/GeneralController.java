@@ -6,10 +6,14 @@ import github.nyaku12.ASCONAChat.Message.Message;
 import github.nyaku12.ASCONAChat.Message.MessageService;
 import github.nyaku12.ASCONAChat.User.User;
 import github.nyaku12.ASCONAChat.User.UserService;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 
+import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -38,8 +42,16 @@ public class GeneralController {
         return(messageService.createMessage(
                 jmap.get("contain").toString(),
                 ((Number) jmap.get("receiver")).longValue(),
-                ((Number) jmap.get("sender")).longValue()
+                ((Number) jmap.get("sender")).longValue(),
+                (Timestamp.valueOf((String) jmap.get("time")))
         ));
+    }
+    public List<Message> getMessages(int receiver_id){
+        return messageService.getMessages(receiver_id);
+    }
+    @PostConstruct
+    public void resetOnline(){
+        userService.resetOnline();
     }
     public int checkUser(HttpHeaders headers){
         User user = userService.getByLogin(headers.getFirst("login"));

@@ -23,4 +23,7 @@ public class UserService {
     public Boolean findStatusById(int id){
         return (userRepository.findStatusById(id));
     }
+    public void resetOnline(){
+        userRepository.resetOnline();
+    }
 }
