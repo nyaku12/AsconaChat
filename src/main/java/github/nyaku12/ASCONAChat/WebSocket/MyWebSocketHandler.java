@@ -1,9 +1,11 @@
 package github.nyaku12.ASCONAChat.WebSocket;
 
 import com.google.gson.Gson;
+import com.mysql.cj.log.Log;
 import github.nyaku12.ASCONAChat.GeneralController;
 import github.nyaku12.ASCONAChat.Message.Message;
 import github.nyaku12.ASCONAChat.User.User;
+import jakarta.websocket.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -18,7 +20,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class MyWebSocketHandler extends TextWebSocketHandler {
-    ConcurrentHashMap<String, Integer> connections = new ConcurrentHashMap<>();
+    ConcurrentHashMap<String, Integer> connections = new ConcurrentHashMap<>(); // sessionId → userId
+    ConcurrentHashMap<Integer, WebSocketSession> userConnections = new ConcurrentHashMap<>(); // userId → sessionId
     @Autowired
     GeneralController controller;
 
@@ -44,6 +47,8 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 session.sendMessage(new TextMessage("succes"));
                 controller.updateOnlineById(code, true);
                 connections.put(session.getId(), code);
+                userConnections.put(code, session);
+                System.out.println("new connection with userId: " + code);
                 break;
         }//проверка логина и пароля
         List<Message> messages = controller.getMessages(connections.get(session.getId()));
@@ -69,7 +74,15 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 controller.createChat(jsonMap);
                 break;
             case ("sentMessage"):
-                controller.createMessage(jsonMap);
+                Message mess = controller.createMessage(jsonMap, connections.contains(jsonMap.get("receiver")));
+                if(userConnections.get(((Number) jsonMap.get("receiver")).intValue()) != null){
+                    System.out.println("user connected" + jsonMap.get("receiver"));
+                    userConnections.get(((Number) jsonMap.get("receiver")).intValue()).sendMessage(new TextMessage(gson.toJson(mess)));
+                }
+                else System.out.println("user is not connected " + jsonMap.get("receiver"));
+                break;
+            case ("readMessage"):
+                controller.readMessage(jsonMap);
                 break;
         }
     }

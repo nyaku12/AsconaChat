@@ -11,12 +11,17 @@ import java.util.List;
 public class MessageService {
     @Autowired
     MessageRepository messageRepository;
-    public Message createMessage(String contain, Long receiverId, Long sender_id, Timestamp senttime){
-        Message message = new Message(contain, receiverId, sender_id, senttime);
+    public Message createMessage(String contain, Long receiverId, Long sender_id, Timestamp senttime, Long chat_id){
+        Message message = new Message(contain, receiverId, sender_id, senttime, chat_id);
         messageRepository.save(message);
         return message;
     }
     public List<Message> getMessages(int receiverId){
-        return messageRepository.getByreceiverIdOrderBySenttime(receiverId);
+        return messageRepository.getByreceiverIdAndStatusFalseOrderBySenttime(receiverId);
+    }
+    public void readMessages(List<Double> message_id){
+        for (double i : message_id){
+            messageRepository.readMessage(((Number) i).longValue());
+        }
     }
 }

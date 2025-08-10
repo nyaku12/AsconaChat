@@ -17,13 +17,16 @@ public class Message {
     private Long sender_id;
     private Boolean status;
     private Timestamp senttime;
+    @Column(name="chatid")
+    private Long chat_id;
 
-    public Message(String contain, Long receiverId, Long sender_id, Timestamp senttime) {
+    public Message(String contain, Long receiverId, Long sender_id, Timestamp senttime, Long chat_id) {
         this.contain = contain;
         this.receiverId = receiverId;
         this.sender_id = sender_id;
         this.status = false;
         this.senttime = senttime;
+        this.chat_id = chat_id;
     }
     public Message() {}
 
@@ -49,6 +52,14 @@ public class Message {
 
     public void setSenttime(Timestamp senttime) {
         this.senttime = senttime;
+    }
+
+    public void setChat_id(Long chat_id) {
+        this.chat_id = chat_id;
+    }
+
+    public Long getChat_id() {
+        return chat_id;
     }
 
     public Timestamp getSenttime() {

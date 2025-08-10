@@ -23,7 +23,13 @@
 
 {
     "type": "sentMessage",
-    "contain": "hui",
+    "contain": "hui987",
     "receiver": 1,
-    "sender": 1
+    "sender": 1,
+    "time": "2025-08-06 00:00:00"
+}
+
+{
+    "type": "readMessage",
+    "id": [6]
 }

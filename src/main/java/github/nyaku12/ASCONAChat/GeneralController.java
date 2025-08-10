@@ -1,5 +1,6 @@
 package github.nyaku12.ASCONAChat;
 
+import com.google.gson.Gson;
 import github.nyaku12.ASCONAChat.Chat.Chat;
 import github.nyaku12.ASCONAChat.Chat.ChatService;
 import github.nyaku12.ASCONAChat.Message.Message;
@@ -16,8 +17,12 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Arrays.stream;
+import static org.aspectj.util.LangUtil.split;
+
 @Component
 public class GeneralController {
+    Gson gson = new Gson();
     @Autowired
     UserService userService;
     @Autowired
@@ -38,13 +43,19 @@ public class GeneralController {
                 ((Number) jmap.get("passhash").hashCode()).longValue()
         ));
     }
-    public Message createMessage(Map<String, Object> jmap){
-        return(messageService.createMessage(
+    public Message createMessage(Map<String, Object> jmap, Boolean online){
+        Message message = (messageService.createMessage(
                 jmap.get("contain").toString(),
                 ((Number) jmap.get("receiver")).longValue(),
                 ((Number) jmap.get("sender")).longValue(),
-                (Timestamp.valueOf((String) jmap.get("time")))
+                (Timestamp.valueOf((String) jmap.get("time"))),
+                ((Number) jmap.get("chat")).longValue()
         ));
+        if(online) sendMessage(message);
+        return message;
+    }
+    public void sendMessage(Message message){
+
     }
     public List<Message> getMessages(int receiver_id){
         return messageService.getMessages(receiver_id);
@@ -52,6 +63,9 @@ public class GeneralController {
     @PostConstruct
     public void resetOnline(){
         userService.resetOnline();
+    }
+    public void readMessage(Map<String, Object> jmap){
+        messageService.readMessages((List<Double>)jmap.get("id"));
     }
     public int checkUser(HttpHeaders headers){
         User user = userService.getByLogin(headers.getFirst("login"));

@@ -25,7 +25,7 @@ public class User {
         this.passHash = passHash;
         this.name = name;
         this.enscryptionKey = enscryptionKey;
-        this.status = true;
+        this.status = false;
     }
 
     public void setId(int id) {
