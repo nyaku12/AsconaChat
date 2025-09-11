@@ -74,10 +74,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 controller.createChat(jsonMap);
                 break;
             case ("sentMessage"):
-                Message mess = controller.createMessage(jsonMap, connections.contains(jsonMap.get("receiver")));
-                if(userConnections.get(((Number) jsonMap.get("receiver")).intValue()) != null){
-                    System.out.println("user connected" + jsonMap.get("receiver"));
-                    userConnections.get(((Number) jsonMap.get("receiver")).intValue()).sendMessage(new TextMessage(gson.toJson(mess)));
+                Message mess = controller.createMessage(jsonMap, connections.contains(jsonMap.get("chat")));
+                if(userConnections.get(((Number) jsonMap.get("chat")).intValue()) != null){
+                    System.out.println("user connected" + jsonMap.get("chat"));
+                    userConnections.get(((Number) jsonMap.get("chat")).intValue()).sendMessage(new TextMessage(gson.toJson(mess)));
                 }
                 else System.out.println("user is not connected " + jsonMap.get("receiver"));
                 break;

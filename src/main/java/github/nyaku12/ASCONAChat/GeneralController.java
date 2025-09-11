@@ -46,7 +46,7 @@ public class GeneralController {
     public Message createMessage(Map<String, Object> jmap, Boolean online){
         Message message = (messageService.createMessage(
                 jmap.get("contain").toString(),
-                ((Number) jmap.get("receiver")).longValue(),
+                ((Number) jmap.get("chat")).longValue(),
                 ((Number) jmap.get("sender")).longValue(),
                 (Timestamp.valueOf((String) jmap.get("time"))),
                 ((Number) jmap.get("chat")).longValue()

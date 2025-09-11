@@ -1,0 +1,29 @@
+-- Таблица чатов
+CREATE TABLE chats (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    `public` BOOLEAN,
+    password BIGINT
+);
+
+-- Таблица сообщений
+CREATE TABLE messages (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    contain VARCHAR(1000), -- предполагаемая длина текста
+    receiver BIGINT,
+    sender BIGINT,
+    status BOOLEAN,
+    senttime TIMESTAMP,
+    chatid BIGINT,
+    FOREIGN KEY (chatid) REFERENCES chats(id)
+);
+
+-- Таблица пользователей
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    login VARCHAR(255) NOT NULL,
+    password BIGINT,
+    name VARCHAR(255),
+    status BOOLEAN,
+    enskey VARCHAR(255)
+);
