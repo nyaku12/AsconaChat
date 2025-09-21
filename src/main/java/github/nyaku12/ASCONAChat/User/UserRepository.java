@@ -11,14 +11,22 @@ import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+
     User getByLogin(String login);
+
     @Modifying
     @Transactional
     @Query("UPDATE User u SET u.status = :status WHERE u.id = :id")
     void updateStatusById(@Param("id") int id, @Param("status") Boolean status);
     Boolean findStatusById(@Param("id") int id);
+
     @Query ("Update User u SET u.status = false")
     @Transactional
     @Modifying
     void resetOnline();
+
+    @Query (value = "INSERT INTO chat_members (userid, chatid) VALUES (:userid, :chatid)", nativeQuery = true)
+    @Transactional
+    @Modifying
+    void addUserToChat(int userid, int chatid);
 }

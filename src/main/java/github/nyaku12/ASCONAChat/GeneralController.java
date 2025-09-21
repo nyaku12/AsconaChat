@@ -14,8 +14,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
 import static org.aspectj.util.LangUtil.split;
@@ -42,6 +44,11 @@ public class GeneralController {
                 (Boolean) jmap.get("open"),
                 ((Number) jmap.get("passhash").hashCode()).longValue()
         ));
+    }
+    public void joinChat(Map<String, Object> jmap){
+        userService.joinChat(
+                gson.fromJson(jmap.get("users").toString(), Integer[].class),
+                ((Number)jmap.get("chat")).intValue());
     }
     public Message createMessage(Map<String, Object> jmap, Boolean online){
         Message message = (messageService.createMessage(

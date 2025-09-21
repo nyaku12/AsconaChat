@@ -84,6 +84,12 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             case ("readMessage"):
                 controller.readMessage(jsonMap);
                 break;
+            case ("getChats"):
+
+                break;
+            case ("joinchat"):
+                controller.joinChat(jsonMap);
+                break;
         }
     }
 

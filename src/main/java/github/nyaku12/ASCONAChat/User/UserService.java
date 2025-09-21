@@ -4,6 +4,8 @@ import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserService {
     @Autowired
@@ -12,6 +14,11 @@ public class UserService {
         User user = new User(login, passHash, name, enscryptionKey);
         userRepository.save(user);
         return (user);
+    }
+    public void joinChat(Integer[] userid, Integer chatid){
+        for (int i: userid){
+            userRepository.addUserToChat(i, chatid);
+        }
     }
     @Nullable
     public User getByLogin(String login){
