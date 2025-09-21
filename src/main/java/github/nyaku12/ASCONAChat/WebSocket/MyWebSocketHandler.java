@@ -85,7 +85,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 controller.readMessage(jsonMap);
                 break;
             case ("getChats"):
-
+                session.sendMessage(new TextMessage(gson.toJson(controller.getchats(connections.get(session.getId())))));
                 break;
             case ("joinchat"):
                 controller.joinChat(jsonMap);

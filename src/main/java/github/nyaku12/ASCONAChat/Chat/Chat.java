@@ -14,6 +14,8 @@ public class Chat {
     private Boolean open;
     private Long password;
 
+    public Chat() {
+    }
 
     public Chat(String name, Boolean open, Long password) {
         this.name = name;

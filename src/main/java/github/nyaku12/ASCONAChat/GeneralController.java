@@ -45,6 +45,7 @@ public class GeneralController {
                 ((Number) jmap.get("passhash").hashCode()).longValue()
         ));
     }
+
     public void joinChat(Map<String, Object> jmap){
         userService.joinChat(
                 gson.fromJson(jmap.get("users").toString(), Integer[].class),
@@ -64,6 +65,7 @@ public class GeneralController {
     public void sendMessage(Message message){
 
     }
+
     public List<Message> getMessages(int receiver_id){
         return messageService.getMessages(receiver_id);
     }
@@ -74,6 +76,7 @@ public class GeneralController {
     public void readMessage(Map<String, Object> jmap){
         messageService.readMessages((List<Double>)jmap.get("id"));
     }
+
     public int checkUser(HttpHeaders headers){
         User user = userService.getByLogin(headers.getFirst("login"));
         if(user == null) return (-1);//неверный логин
@@ -86,6 +89,11 @@ public class GeneralController {
         }
         else return (user.getId());
     }
+
+    public List<Chat> getchats(int userid){
+        return chatService.getchats(userid);
+    }
+
     public void updateOnlineById(int id, Boolean online){
         userService.updateOnline(id, online);
     }

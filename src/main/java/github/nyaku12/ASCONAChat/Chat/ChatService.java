@@ -3,6 +3,8 @@ package github.nyaku12.ASCONAChat.Chat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ChatService {
     @Autowired
@@ -11,5 +13,8 @@ public class ChatService {
         Chat chat = new Chat(name, open, passhash);
         chatRepository.save(chat);
         return chat;
+    }
+    public List<Chat> getchats(int userid){
+        return(chatRepository.getChatsByUserId(userid));
     }
 }
